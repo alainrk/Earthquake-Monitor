@@ -1,0 +1,21 @@
+#########################################################################
+#	This program is free software; you can redistribute it and/or modify
+#	it under the terms of the GNU General Public License as published by
+#	the Free Software Foundation; either version 2 of the License, or
+#	(at your option) any later version.
+
+# Author 	: Alain Di Chiappari
+# Date 		: 21/05/2012
+# Email		: alain.dichiappari@gmail.com
+
+############################# README ####################################
+#	1) Iscrivetevi a twitter se non l'avete, anche ad hoc, o fasullo, per usare twidge.
+#	2) Scaricare il binario per la vostra architettura: "https://github.com/jgoerzen/twidge/downloads".
+#	3) Rinominare il file in "twidge".
+#	4) Spostarlo come root in "/usr/local/bin".
+#	5) Dategli permessi d'esecuzione "chmod +x [file]".
+#	6) Lanciate "twidge setup" e come vi dice andate al link indicato.
+#	7) Incollate il token che vi viene dato nella pagina per continuare il setup.
+#	8) Date permessi di esecuzione a questo script e mettetelo come root in /usr/local/bin se volete lanciarlo senza specificare il path.
+#	NB) Con "twidge lscommands" avrete la lista dei comandi, se volete usarlo come vi pare.
+############################# README ####################################
