@@ -1,0 +1,56 @@
+#!/bin/bash
+
+#########################################################################
+#	This program is free software; you can redistribute it and/or modify
+#	it under the terms of the GNU General Public License as published by
+#	the Free Software Foundation; either version 2 of the License, or
+#	(at your option) any later version.
+
+# Author 	: Alain Di Chiappari
+# Date 		: 21/05/2012
+# Email		: alain.dichiappari@gmail.com
+
+############################# README ####################################
+#	1) Iscrivetevi a twitter se non l'avete, anche ad hoc, o fasullo, per usare twidge.
+#	2) Scaricare il binario per la vostra architettura: "https://github.com/jgoerzen/twidge/downloads".
+#	3) Rinominare il file in "twidge".
+#	4) Spostarlo come root in "/usr/local/bin".
+#	5) Dategli permessi d'esecuzione "chmod +x [file]".
+#	6) Lanciate "twidge setup" e come vi dice andate al link indicato.
+#	7) Incollate il token che vi viene dato nella pagina per continuare il setup.
+#	8) Date permessi di esecuzione a questo script e mettetelo come root in /usr/local/bin se volete lanciarlo senza specificare il path.
+#	NB) Con "twidge lscommands" avrete la lista dei comandi, se volete usarlo come vi pare.
+############################# README ####################################
+
+LAST=""
+TIME=""
+DETAILS=""
+
+while [[ true ]]; do
+	sleep 10
+
+	TMP=`twidge lsrecent | grep -A1 '<INGVterremoti>' | head -2 | awk 'BEGIN{first="";x=1}{if (x==1) {first=$0;x++} else {print first $0}}' | tr --squeeze-repeats ' ' 2> ~/Scrivania/errorINGV`
+
+	# Get time
+	TIME=`echo "$TMP" | cut -d' ' -f5`
+	if [[ "$TIME" != "$LAST" ]] && [[ -n "$TIME" ]]; then
+		# Echo
+		DETAILS=""
+		MAG=`echo "$TMP" | cut -d' ' -f3`
+		DAY=`echo "$TMP" | cut -d' ' -f4 | sed 's/-/\//g'`
+		LAT=`echo "$TMP" | cut -d' ' -f7`
+		LON=`echo "$TMP" | cut -d' ' -f8`
+		PROF=`echo "$TMP" | cut -d' ' -f9`
+		WHERE=`echo "$TMP" | cut -d' ' -f10`
+		DETAILS="$DAY-${TIME}[UTC] $MAG $LAT $LON $PROF $WHERE"
+		zenity --notification --timeout 240 &
+		zenity --list --title "Eartquake Monitor" --column "Details" $DETAILS --text="New Quake" --timeout=3600 &
+		echo "$DETAILS" >> ~/Scrivania/INGV/INGV_Eartquakes
+		# DEBUG
+		x=`echo "$DETAILS" | wc | tr --squeeze-repeats ' ' | cut -d' ' -f4`
+		# Set last
+		LAST="$TIME"
+	else 
+		echo `date` "- No quakes"
+	fi
+done
